@@ -18,9 +18,62 @@
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            padding: 80px 20px 40px;  /* TOP padding 80px → content neeche shift */
         }
         
+        /* ========== MAIN WRAPPER ========== */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 700px;
+            /* NO extra margin-top */
+        }
+        
+        /* ========== IMAGE CONTAINER (656 x 492 px) ========== */
+        .image-container {
+            width: 656px;
+            max-width: 100%;
+            height: 492px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            /* NO extra margin-top */
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        
+        /* Placeholder agar image load na ho */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f0ff 0%, #e8e8ff 100%);
+            color: #667eea;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        /* ========== LOGIN CONTAINER ========== */
         .login-container {
             background: white;
             padding: 40px;
@@ -245,57 +298,100 @@
         .admin-link a:hover {
             color: #667eea;
         }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 700px) {
+            body {
+                padding-top: 50px;  /* mobile mein thoda kam top gap */
+            }
+            .image-container {
+                width: 100%;
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding-top: 30px;
+            }
+            .image-container {
+                width: 100%;
+                height: 220px;
+            }
+            .login-container {
+                padding: 25px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo">🔐</div>
-        <h2>Welcome Back!</h2>
-        <p class="subtitle">Login to your account to continue</p>
+    <!-- ========== MAIN WRAPPER ========== -->
+    <div class="main-wrapper">
         
-        <div class="message" id="message"></div>
-        
-        <form id="loginForm">
-            <div class="form-group">
-                <label>📧 Email Address</label>
-                <input type="email" id="loginEmail" placeholder="Enter your email" required autocomplete="email">
+        <!-- ========== IMAGE CONTAINER (656 x 492 px) ========== -->
+        <div class="image-container">
+            <img 
+                src="1vs/image/image.png" 
+                alt="Banner Image"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+            <div class="image-placeholder" style="display:none;">
+                <span style="font-size:50px;">🖼️</span>
+                <span>Image Not Found</span>
+                <small style="font-size:12px; color:#888;">Place image.png in: My web/image/</small>
+            </div>
+        </div>
+
+        <!-- ========== LOGIN FORM ========== -->
+        <div class="login-container">
+            <div class="logo">🔐</div>
+            <h2>Welcome Back!</h2>
+            <p class="subtitle">Login to your account to continue</p>
+            
+            <div class="message" id="message"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>📧 Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label>🔒 Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                </div>
+                
+                <div class="remember-forgot">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                    <a href="#" class="forgot-password" onclick="forgotPassword()">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" id="loginBtn">
+                    <span id="btnText">🚀 Login</span>
+                    <span id="btnLoader" style="display:none;">
+                        <span class="loader"></span> Logging in...
+                    </span>
+                </button>
+            </form>
+            
+            <div class="divider">
+                <span>OR</span>
             </div>
             
-            <div class="form-group">
-                <label>🔒 Password</label>
-                <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+            <div class="signup-link">
+                Don't have an account? <a href="signup.html">Sign Up</a>
             </div>
             
-            <div class="remember-forgot">
-                <label class="remember-me">
-                    <input type="checkbox" id="rememberMe"> Remember me
-                </label>
-                <a href="#" class="forgot-password" onclick="forgotPassword()">Forgot Password?</a>
+            <div class="admin-link">
+                <a href="admin.html">👑 Admin Login</a>
             </div>
-            
-            <button type="submit" id="loginBtn">
-                <span id="btnText">🚀 Login</span>
-                <span id="btnLoader" style="display:none;">
-                    <span class="loader"></span> Logging in...
-                </span>
-            </button>
-        </form>
-        
-        <div class="divider">
-            <span>OR</span>
         </div>
         
-        <div class="signup-link">
-            Don't have an account? <a href="signup.html">Sign Up</a>
-        </div>
-        
-        <div class="admin-link">
-            <a href="admin.html">👑 Admin Login</a>
-        </div>
     </div>
 
     <script type="module">
-        // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
         import { 
             getAuth, 
@@ -308,7 +404,6 @@
         } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBH00UZAIJd8vRAEqbGV391YTA2Fae2cCM",
             authDomain: "mydata-11fdb.firebaseapp.com",
@@ -319,160 +414,94 @@
             measurementId: "G-DBTR8K5PBV"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
         console.log("✅ Firebase initialized!");
 
-        // Check if already logged in
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // User is already logged in
                 const userDoc = await getDoc(doc(db, "Users", user.uid));
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
-                    if (userData.role === 'admin') {
-                        window.location.href = 'admin.html';
-                    } else {
-                        window.location.href = 'dashboard.html';
-                    }
+                    window.location.href = userData.role === 'admin' ? 'admin.html' : 'dashboard.html';
                 } else {
                     window.location.href = 'dashboard.html';
                 }
             }
         });
 
-        // Login Form Handler
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const rememberMe = document.getElementById('rememberMe').checked;
-            
             const messageDiv = document.getElementById('message');
             const loginBtn = document.getElementById('loginBtn');
             const btnText = document.getElementById('btnText');
             const btnLoader = document.getElementById('btnLoader');
 
-            // Hide previous messages
             messageDiv.style.display = 'none';
             messageDiv.className = 'message';
 
-            // Validation
             if (!email || !password) {
                 showMessage('❌ Please enter email and password!', 'error');
                 return;
             }
 
-            // Show loading
             loginBtn.disabled = true;
             btnText.style.display = 'none';
             btnLoader.style.display = 'inline';
 
             try {
-                // Set persistence based on Remember Me
-                if (rememberMe) {
-                    await setPersistence(auth, browserLocalPersistence);
-                } else {
-                    await setPersistence(auth, browserSessionPersistence);
-                }
-
-                // Sign in
+                await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                
-                console.log("✅ Login successful:", user.email);
-
-                // Check user role from Firestore
-                const userDoc = await getDoc(doc(db, "Users", user.uid));
-                
+                const userDoc = await getDoc(doc(db, "Users", userCredential.user.uid));
                 showMessage('✅ Login successful! Redirecting...', 'success');
-
                 setTimeout(() => {
-                    if (userDoc.exists() && userDoc.data().role === 'admin') {
-                        window.location.href = 'admin.html';
-                    } else {
-                        window.location.href = 'dashboard.html';
-                    }
+                    window.location.href = (userDoc.exists() && userDoc.data().role === 'admin') ? 'admin.html' : 'dashboard.html';
                 }, 1000);
-
             } catch (error) {
-                console.error("❌ Login error:", error);
-                
                 let errorMessage = 'Login failed!';
-                
                 switch (error.code) {
-                    case 'auth/invalid-credential':
-                        errorMessage = '❌ Invalid email or password!';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = '❌ Invalid email format!';
-                        break;
-                    case 'auth/user-disabled':
-                        errorMessage = '❌ This account has been disabled!';
-                        break;
-                    case 'auth/user-not-found':
-                        errorMessage = '❌ No account found with this email!';
-                        break;
-                    case 'auth/wrong-password':
-                        errorMessage = '❌ Incorrect password!';
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMessage = '❌ Too many attempts! Please try again later.';
-                        break;
-                    case 'auth/network-request-failed':
-                        errorMessage = '❌ Network error! Check your connection.';
-                        break;
-                    default:
-                        errorMessage = '❌ ' + error.message;
+                    case 'auth/invalid-credential': errorMessage = '❌ Invalid email or password!'; break;
+                    case 'auth/invalid-email': errorMessage = '❌ Invalid email format!'; break;
+                    case 'auth/user-disabled': errorMessage = '❌ This account has been disabled!'; break;
+                    case 'auth/user-not-found': errorMessage = '❌ No account found with this email!'; break;
+                    case 'auth/wrong-password': errorMessage = '❌ Incorrect password!'; break;
+                    case 'auth/too-many-requests': errorMessage = '❌ Too many attempts! Please try again later.'; break;
+                    case 'auth/network-request-failed': errorMessage = '❌ Network error! Check your connection.'; break;
+                    default: errorMessage = '❌ ' + error.message;
                 }
-                
                 showMessage(errorMessage, 'error');
-                
-                // Reset button
                 loginBtn.disabled = false;
                 btnText.style.display = 'inline';
                 btnLoader.style.display = 'none';
             }
         });
 
-        // Forgot Password
         window.forgotPassword = async function() {
             const email = document.getElementById('loginEmail').value.trim();
-            
             if (!email) {
                 showMessage('❌ Please enter your email first!', 'error');
                 return;
             }
-
-            if (!confirm(`Send password reset email to ${email}?`)) {
-                return;
-            }
-
+            if (!confirm(`Send password reset email to ${email}?`)) return;
             try {
                 await sendPasswordResetEmail(auth, email);
                 showMessage('✅ Password reset email sent! Check your inbox.', 'success');
             } catch (error) {
-                console.error("Reset error:", error);
                 showMessage('❌ Error: ' + error.message, 'error');
             }
         };
 
-        // Helper function
         function showMessage(message, type) {
             const messageDiv = document.getElementById('message');
             messageDiv.textContent = message;
             messageDiv.className = 'message ' + type;
             messageDiv.style.display = 'block';
-            
-            if (type === 'success') {
-                setTimeout(() => {
-                    messageDiv.style.display = 'none';
-                }, 3000);
-            }
+            if (type === 'success') setTimeout(() => messageDiv.style.display = 'none', 3000);
         }
     </script>
 </body>
