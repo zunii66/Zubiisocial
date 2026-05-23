@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MyData</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: 0.3s;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+        
+        .navbar .nav-links a:hover,
+        .navbar .nav-links a.active {
+            color: #667eea;
+            background: #f0f0ff;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .user-info-menu {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .user-email {
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .logout-btn {
+            background: #e53e3e;
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c53030;
+            transform: translateY(-1px);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .welcome-text h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .welcome-text .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .welcome-text p {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .date-badge {
+            background: #f0f0ff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+        
+        .stat-card.balance::before {
+            background: linear-gradient(90deg, #48bb78, #38a169);
+        }
+        
+        .stat-card.orders::before {
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+        }
+        
+        .stat-card.pending::before {
+            background: linear-gradient(90deg, #ed8936, #dd6b20);
+        }
+        
+        .stat-card.success::before {
+            background: linear-gradient(90deg, #9f7aea, #805ad5);
+        }
+        
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-title {
+            color: #888;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .stat-change {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .stat-change.positive {
+            color: #48bb78;
+        }
+        
+        .stat-change.negative {
+            color: #e53e3e;
+        }
+        
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .profile-info h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: #888;
+            font-size: 15px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+        
+        .info-item .info-icon {
+            font-size: 24px;
+        }
+        
+        .info-item .info-label {
+            color: #888;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .info-item .info-value {
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        /* Activity Section */
+        .activity-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+        }
+        
+        .activity-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+        
+        .activity-item:hover {
+            background: #edf2f7;
+        }
+        
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .activity-icon.order { background: #e8f4fd; color: #4299e1; }
+        .activity-icon.balance { background: #e6fffa; color: #48bb78; }
+        .activity-icon.pending { background: #fffaf0; color: #ed8936; }
+        .activity-icon.success { background: #f0e6ff; color: #9f7aea; }
+        
+        .activity-details { flex: 1; }
+        
+        .activity-details h4 {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+        
+        .activity-details p {
+            color: #888;
+            font-size: 13px;
+        }
+        
+        .activity-time {
+            color: #aaa;
+            font-size: 12px;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+        
+        .no-data .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-value {
+                font-size: 28px;
+            }
+            
+            .welcome-text h1 {
+                font-size: 22px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">🚀 MyData</div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="active">🏠 Dashboard</a>
+            <a href="orders.html">📦 Orders</a>
+            <a href="profile.html">👤 Profile</a>
+        </div>
+        <div class="user-menu">
+            <div class="user-avatar" id="navAvatar">U</div>
+            <div class="user-info-menu">
+                <span class="user-name" id="navUserName">User</span>
+                <span class="user-email" id="navUserEmail">user@email.com</span>
+            </div>
+            <button class="logout-btn" onclick="logoutUser()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-text">
+                <h1>Welcome, <span class="highlight" id="welcomeName">User</span>! 👋</h1>
+                <p>Here's your personal dashboard overview</p>
+            </div>
+            <div class="date-badge" id="currentDate"></div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <!-- Balance Card -->
+            <div class="stat-card balance">
+                <div class="stat-icon">💰</div>
+                <div class="stat-title">Your Balance</div>
+                <div class="stat-value" id="balanceValue">$0</div>
+                <div class="stat-change positive" id="balanceChange">Available</div>
+            </div>
+
+            <!-- Total Orders Card -->
+            <div class="stat-card orders">
+                <div class="stat-icon">📦</div>
+                <div class="stat-title">Total Orders</div>
+                <div class="stat-value" id="totalOrdersValue">0</div>
+                <div class="stat-change positive" id="totalOrdersChange">All time</div>
+            </div>
+
+            <!-- Pending Orders Card -->
+            <div class="stat-card pending">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-title">Pending Orders</div>
+                <div class="stat-value" id="pendingOrdersValue">0</div>
+                <div class="stat-change negative" id="pendingOrdersChange">In progress</div>
+            </div>
+
+            <!-- Success Orders Card -->
+            <div class="stat-card success">
+                <div class="stat-icon">✅</div>
+                <div class="stat-title">Success Orders</div>
+                <div class="stat-value" id="successOrdersValue">0</div>
+                <div class="stat-change positive" id="successOrdersChange">Completed</div>
+            </div>
+        </div>
+
+        <!-- Profile Info Card -->
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">U</div>
+                <div class="profile-info">
+                    <h2 id="profileName">User Name</h2>
+                    <p id="profileUsername">@username</p>
+                </div>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-icon">📧</span>
+                    <div>
+                        <div class="info-label">Email</div>
+                        <div class="info-value" id="profileEmail">user@email.com</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">📅</span>
+                    <div>
+                        <div class="info-label">Member Since</div>
+                        <div class="info-value" id="profileJoinDate">N/A</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">🎭</span>
+                    <div>
+                        <div class="info-label">Role</div>
+                        <div class="info-value" id="profileRole">User</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">🆔</span>
+                    <div>
+                        <div class="info-label">User ID</div>
+                        <div class="info-value" id="profileUserId" style="font-size:12px;">N/A</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <h2>📋 Your Activity</h2>
+            <div class="activity-list" id="activityList">
+                <div class="no-data">
+                    <div class="icon">📭</div>
+                    <p>No recent activity</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBH00UZAIJd8vRAEqbGV391YTA2Fae2cCM",
+            authDomain: "mydata-11fdb.firebaseapp.com",
+            projectId: "mydata-11fdb",
+            storageBucket: "mydata-11fdb.firebasestorage.app",
+            messagingSenderId: "824237451051",
+            appId: "1:824237451051:web:db656d9ddedafa54aa476e",
+            measurementId: "G-DBTR8K5PBV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUserStatsDoc = null;
+
+        // Update date
+        function updateDate() {
+            const now = new Date();
+            document.getElementById('currentDate').textContent = 
+                now.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+        }
+        updateDate();
+
+        // Load user profile data
+        async function loadUserProfile(userId) {
+            try {
+                const userDoc = await getDoc(doc(db, "Users", userId));
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    
+                    // Welcome section
+                    document.getElementById('welcomeName').textContent = userData.name || 'User';
+                    
+                    // Navbar
+                    document.getElementById('navUserName').textContent = userData.name || 'User';
+                    document.getElementById('navUserEmail').textContent = userData.email || '';
+                    const firstLetter = (userData.name || 'U').charAt(0).toUpperCase();
+                    document.getElementById('navAvatar').textContent = firstLetter;
+                    
+                    // Profile card
+                    document.getElementById('profileAvatar').textContent = firstLetter;
+                    document.getElementById('profileName').textContent = userData.name || 'N/A';
+                    document.getElementById('profileUsername').textContent = '@' + (userData.username || 'username');
+                    document.getElementById('profileEmail').textContent = userData.email || 'N/A';
+                    document.getElementById('profileRole').textContent = (userData.role || 'user').charAt(0).toUpperCase() + (userData.role || 'user').slice(1);
+                    document.getElementById('profileUserId').textContent = userId;
+                    
+                    if (userData.createdAt) {
+                        const joinDate = new Date(userData.createdAt);
+                        document.getElementById('profileJoinDate').textContent = 
+                            joinDate.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                    }
+                    
+                    console.log("✅ User profile loaded!");
+                }
+            } catch (error) {
+                console.error("❌ Error loading profile:", error);
+            }
+        }
+
+        // Listen to user-specific stats
+        function listenToUserStats(userId) {
+            // User-specific stats document
+            currentUserStatsDoc = doc(db, "UserStats", userId);
+            
+            onSnapshot(currentUserStatsDoc, (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const stats = docSnapshot.data();
+                    updateStatsUI(stats);
+                    console.log("📊 Personal stats updated:", stats);
+                } else {
+                    // No personal stats yet, show defaults
+                    console.log("⚠️ No personal stats found, showing defaults");
+                    updateStatsUI({
+                        balance: 0,
+                        totalOrders: 0,
+                        pendingOrders: 0,
+                        successOrders: 0
+                    });
+                }
+            }, (error) => {
+                console.error("❌ Stats listener error:", error);
+                updateStatsUI({
+                    balance: 0,
+                    totalOrders: 0,
+                    pendingOrders: 0,
+                    successOrders: 0
+                });
+            });
+        }
+
+        // Update Stats UI
+        function updateStatsUI(stats) {
+            const balance = stats.balance || 0;
+            const totalOrders = stats.totalOrders || 0;
+            const pendingOrders = stats.pendingOrders || 0;
+            const successOrders = stats.successOrders || 0;
+            
+            document.getElementById('balanceValue').textContent = `$${balance}`;
+            document.getElementById('balanceChange').textContent = balance > 0 ? 'Available' : 'No balance';
+            document.getElementById('balanceChange').className = balance > 0 ? 'stat-change positive' : 'stat-change negative';
+            
+            document.getElementById('totalOrdersValue').textContent = totalOrders;
+            document.getElementById('totalOrdersChange').textContent = totalOrders > 0 ? `${totalOrders} total` : 'No orders';
+            document.getElementById('totalOrdersChange').className = totalOrders > 0 ? 'stat-change positive' : 'stat-change negative';
+            
+            document.getElementById('pendingOrdersValue').textContent = pendingOrders;
+            document.getElementById('pendingOrdersChange').textContent = pendingOrders > 0 ? `${pendingOrders} in progress` : 'None pending';
+            document.getElementById('pendingOrdersChange').className = pendingOrders > 0 ? 'stat-change negative' : 'stat-change positive';
+            
+            document.getElementById('successOrdersValue').textContent = successOrders;
+            document.getElementById('successOrdersChange').textContent = successOrders > 0 ? `${successOrders} completed` : 'None completed';
+            document.getElementById('successOrdersChange').className = successOrders > 0 ? 'stat-change positive' : 'stat-change negative';
+            
+            updateActivityList(stats);
+        }
+
+        // Update Activity List
+        function updateActivityList(stats) {
+            const activityList = document.getElementById('activityList');
+            let activities = [];
+            
+            if (stats.balance > 0) {
+                activities.push({
+                    icon: '💰',
+                    type: 'balance',
+                    title: 'Balance Available',
+                    desc: `Your current balance is $${stats.balance}`,
+                    time: 'Current'
+                });
+            }
+            
+            if (stats.totalOrders > 0) {
+                activities.push({
+                    icon: '📦',
+                    type: 'order',
+                    title: 'Total Orders',
+                    desc: `You have ${stats.totalOrders} total orders`,
+                    time: 'Updated'
+                });
+            }
+            
+            if (stats.pendingOrders > 0) {
+                activities.push({
+                    icon: '⏳',
+                    type: 'pending',
+                    title: 'Pending Orders',
+                    desc: `${stats.pendingOrders} orders are pending`,
+                    time: 'In Progress'
+                });
+            }
+            
+            if (stats.successOrders > 0) {
+                activities.push({
+                    icon: '✅',
+                    type: 'success',
+                    title: 'Successful Orders',
+                    desc: `${stats.successOrders} orders completed`,
+                    time: 'Completed'
+                });
+            }
+            
+            if (activities.length === 0) {
+                activityList.innerHTML = `
+                    <div class="no-data">
+                        <div class="icon">📭</div>
+                        <p>No activity yet. Admin will update your stats soon.</p>
+                    </div>
+                `;
+            } else {
+                activityList.innerHTML = activities.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-icon ${activity.type}">${activity.icon}</div>
+                        <div class="activity-details">
+                            <h4>${activity.title}</h4>
+                            <p>${activity.desc}</p>
+                        </div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Logout
+        window.logoutUser = async function() {
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    await signOut(auth);
+                    window.location.href = 'login.html';
+                } catch (error) {
+                    console.error("Logout error:", error);
+                }
+            }
+        };
+
+        // Auth State Observer
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("👤 Logged in:", user.email, "UID:", user.uid);
+                loadUserProfile(user.uid);
+                listenToUserStats(user.uid); // Personal stats listener
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

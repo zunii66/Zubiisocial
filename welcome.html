@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - MyData</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .welcome-container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 40px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(72, 187, 120, 0.4);
+        }
+        
+        .welcome-container h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-container .welcome-text {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .user-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .user-card .avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 30px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .info-row .label {
+            font-weight: 600;
+            color: #555;
+            min-width: 100px;
+            font-size: 14px;
+        }
+        
+        .info-row .value {
+            color: #333;
+            font-size: 15px;
+            word-break: break-all;
+        }
+        
+        .info-row .emoji {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+        }
+        
+        .logout-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .date-time {
+            color: #888;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <!-- Success Icon -->
+        <div class="success-icon">✅</div>
+        
+        <!-- Welcome Message -->
+        <h1>Welcome Aboard! 🎉</h1>
+        <p class="welcome-text">Your account has been created successfully</p>
+        
+        <!-- User Info Card -->
+        <div class="user-card">
+            <div class="avatar" id="userAvatar">U</div>
+            
+            <div class="info-row">
+                <span class="emoji">👤</span>
+                <span class="label">Name:</span>
+                <span class="value" id="displayName">Loading...</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="emoji">👨‍💻</span>
+                <span class="label">Username:</span>
+                <span class="value" id="displayUsername">Loading...</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="emoji">📧</span>
+                <span class="label">Email:</span>
+                <span class="value" id="displayEmail">Loading...</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="emoji">📅</span>
+                <span class="label">Joined:</span>
+                <span class="value" id="displayDate">Today</span>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="goToDashboard()">
+                🏠 Go to Dashboard
+            </button>
+            <button class="btn btn-outline" onclick="goToProfile()">
+                ⚙️ Edit Profile
+            </button>
+        </div>
+        
+        <!-- Logout -->
+        <div class="logout-section">
+            <button class="btn btn-danger" onclick="logoutUser()">
+                🚪 Logout
+            </button>
+            <p class="date-time" id="currentDateTime"></p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBH00UZAIJd8vRAEqbGV391YTA2Fae2cCM",
+            authDomain: "mydata-11fdb.firebaseapp.com",
+            projectId: "mydata-11fdb",
+            storageBucket: "mydata-11fdb.firebasestorage.app",
+            messagingSenderId: "824237451051",
+            appId: "1:824237451051:web:db656d9ddedafa54aa476e",
+            measurementId: "G-DBTR8K5PBV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Update date/time
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('currentDateTime').textContent = 
+                now.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }) + ' | ' + 
+                now.toLocaleTimeString('en-US');
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // Load user data from Firestore
+        async function loadUserData(userId) {
+            try {
+                const userDoc = await getDoc(doc(db, "Users", userId));
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    
+                    // Update UI
+                    document.getElementById('displayName').textContent = userData.name || 'N/A';
+                    document.getElementById('displayUsername').textContent = userData.username || 'N/A';
+                    document.getElementById('displayEmail').textContent = userData.email || 'N/A';
+                    
+                    // Set avatar (first letter of name)
+                    const firstLetter = (userData.name || 'U').charAt(0).toUpperCase();
+                    document.getElementById('userAvatar').textContent = firstLetter;
+                    
+                    // Set join date
+                    if (userData.createdAt) {
+                        const joinDate = new Date(userData.createdAt);
+                        document.getElementById('displayDate').textContent = 
+                            joinDate.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                    }
+                    
+                    console.log("✅ User data loaded!");
+                } else {
+                    // Try sessionStorage as fallback
+                    const storedUser = sessionStorage.getItem('welcomeUser');
+                    if (storedUser) {
+                        const userData = JSON.parse(storedUser);
+                        document.getElementById('displayName').textContent = userData.name;
+                        document.getElementById('displayUsername').textContent = userData.username;
+                        document.getElementById('displayEmail').textContent = userData.email;
+                        
+                        const firstLetter = userData.name.charAt(0).toUpperCase();
+                        document.getElementById('userAvatar').textContent = firstLetter;
+                    } else {
+                        console.log("⚠️ No user data found");
+                        document.getElementById('displayName').textContent = 'Unknown';
+                        document.getElementById('displayUsername').textContent = 'Unknown';
+                        document.getElementById('displayEmail').textContent = 'Unknown';
+                    }
+                }
+            } catch (error) {
+                console.error("❌ Error loading user data:", error);
+            }
+        }
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("👤 User logged in:", user.email);
+                loadUserData(user.uid);
+            } else {
+                console.log("⚠️ No user logged in");
+                // Try to get data from sessionStorage
+                const storedUser = sessionStorage.getItem('welcomeUser');
+                if (storedUser) {
+                    const userData = JSON.parse(storedUser);
+                    document.getElementById('displayName').textContent = userData.name;
+                    document.getElementById('displayUsername').textContent = userData.username;
+                    document.getElementById('displayEmail').textContent = userData.email;
+                    
+                    const firstLetter = userData.name.charAt(0).toUpperCase();
+                    document.getElementById('userAvatar').textContent = firstLetter;
+                }
+            }
+        });
+
+        // Navigation functions
+        window.goToDashboard = function() {
+            window.location.href = 'dashboard.html'; // Your dashboard page
+        };
+
+        window.goToProfile = function() {
+            window.location.href = 'profile.html'; // Your profile page
+        };
+
+        // Logout function
+        window.logoutUser = async function() {
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    await signOut(auth);
+                    sessionStorage.removeItem('welcomeUser');
+                    window.location.href = 'signup.html';
+                } catch (error) {
+                    console.error("Logout error:", error);
+                }
+            }
+        };
+    </script>
+</body>
+</html>

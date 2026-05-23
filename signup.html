@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - MyData</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .signup-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .signup-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .signup-container .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .form-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+        
+        .password-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .message.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+            display: block;
+        }
+        
+        .message.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #e53e3e;
+            display: block;
+        }
+        
+        .message.info {
+            background: #bee3f8;
+            color: #2a4365;
+            border-left: 4px solid #4299e1;
+            display: block;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+        
+        .input-icon input {
+            padding-left: 45px;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>🚀 Create Account</h2>
+        <p class="subtitle">Join MyData and get started</p>
+        
+        <div class="message" id="message"></div>
+        
+        <form id="signupForm">
+            <div class="form-group">
+                <label>👤 Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required autocomplete="name">
+            </div>
+            
+            <div class="form-group">
+                <label>👨‍💻 Username</label>
+                <input type="text" id="username" placeholder="Choose a username" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label>📧 Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+            </div>
+            
+            <div class="form-group">
+                <label>🔒 Password</label>
+                <input type="password" id="password" placeholder="Create a password" required autocomplete="new-password">
+                <p class="password-hint">Minimum 6 characters</p>
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                <span id="btnText">Create Account</span>
+                <span id="btnLoader" style="display:none;">
+                    <span class="loader"></span> Creating...
+                </span>
+            </button>
+        </form>
+        
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBH00UZAIJd8vRAEqbGV391YTA2Fae2cCM",
+            authDomain: "mydata-11fdb.firebaseapp.com",
+            projectId: "mydata-11fdb",
+            storageBucket: "mydata-11fdb.firebasestorage.app",
+            messagingSenderId: "824237451051",
+            appId: "1:824237451051:web:db656d9ddedafa54aa476e",
+            measurementId: "G-DBTR8K5PBV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        console.log("✅ Firebase initialized!");
+
+        // Signup Form Handler
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            const messageDiv = document.getElementById('message');
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+
+            // Hide previous messages
+            messageDiv.style.display = 'none';
+            messageDiv.className = 'message';
+
+            // Validation
+            if (!name || !username || !email || !password) {
+                showMessage('❌ Please fill all fields!', 'error');
+                return;
+            }
+
+            if (name.length < 3) {
+                showMessage('❌ Name must be at least 3 characters!', 'error');
+                return;
+            }
+
+            if (username.length < 3) {
+                showMessage('❌ Username must be at least 3 characters!', 'error');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showMessage('❌ Please enter a valid email!', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('❌ Password must be at least 6 characters!', 'error');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline';
+
+            try {
+                console.log("🔄 Creating user:", email);
+                
+                // Step 1: Create user in Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                console.log("✅ Auth user created:", user.uid);
+
+                // Step 2: Save user data to Firestore
+                const userData = {
+                    name: name,
+                    username: username,
+                    email: email,
+                    role: "user", // Default role
+                    createdAt: new Date().toISOString(),
+                    uid: user.uid
+                };
+
+                await setDoc(doc(db, "Users", user.uid), userData);
+                console.log("✅ User data saved to Firestore!");
+
+                // Success message
+                showMessage('✅ Account created successfully! Redirecting...', 'success');
+
+                // Store user data in sessionStorage for welcome page
+                sessionStorage.setItem('welcomeUser', JSON.stringify({
+                    name: name,
+                    username: username,
+                    email: email
+                }));
+
+                // Redirect to welcome page after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'welcome.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error("❌ Signup error:", error);
+                
+                let errorMessage = 'Something went wrong!';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = '❌ This email is already registered! Please login.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = '❌ Invalid email address!';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = '❌ Password is too weak! Use at least 6 characters.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = '❌ Network error! Please check your internet connection.';
+                        break;
+                    default:
+                        errorMessage = '❌ ' + error.message;
+                }
+                
+                showMessage(errorMessage, 'error');
+                
+                // Reset button
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoader.style.display = 'none';
+            }
+        });
+
+        // Helper function to show messages
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            // Auto hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
